@@ -13,5 +13,5 @@ public class Constants {
 	// 处理类似${key}的串
 	public static final String POI_KEY_REGEXP = "\\$\\{(\\w+)\\}";
 	// 处理类似${vo.key}的串
-	public static final String POI_VO_DOT_KEY_REGEXP = "\\$\\{(\\w+\\.\\w+)\\}";
+	public static final String POI_VO_DOT_KEY_REGEXP = "\\$(\\{)(\\w+\\.)(.+?\\})";
 }

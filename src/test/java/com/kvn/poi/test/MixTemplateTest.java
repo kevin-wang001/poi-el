@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 import com.kvn.poi.MockUtil;
 import com.kvn.poi.PoiEl;
 import com.kvn.poi.exportvo.Order;
+import com.kvn.poi.exportvo.Plan;
 
 /**
 * @author wzy
@@ -44,13 +45,16 @@ public class MixTemplateTest {
 	
 
 	public static void main(String[] args) throws Exception {
-		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\01_Template_foreach.xlsx";
+		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\03_Template_混合模板.xlsx";
 		Map<String, Object> rootObjectMap = Maps.newHashMap();
+		Plan plan = MockUtil.randomInstanceOfNonCollection(Plan.class);
 		Order order1 = MockUtil.randomInstanceOfNonCollection(Order.class);
 		Order order2 = MockUtil.randomInstanceOfNonCollection(Order.class);
-		Order order3 = MockUtil.randomInstanceOfNonCollection(Order.class);
+		List<Order> list = Lists.newArrayList(order1, order2);
 		
-		List list = Lists.newArrayList(order1, order2, order3);
+		
+		rootObjectMap.put("mangerName", "张三");
+		rootObjectMap.put("plan", plan);
 		rootObjectMap.put("list", list);
 		getPoiWbByTpl(path, rootObjectMap);
 	}

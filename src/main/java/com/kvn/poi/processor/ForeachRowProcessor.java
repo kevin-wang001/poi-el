@@ -11,6 +11,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -18,9 +21,15 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import com.kvn.poi.common.Constants;
 import com.kvn.poi.domain.MutiRowModel;
 import com.kvn.poi.exception.PoiElErrorCode;
+import com.kvn.poi.log.Log;
 
+/**
+ * <poi:foreach></poi:foreach>的处理器
+ * @author wzy
+ *
+ */
 public class ForeachRowProcessor implements RowProcessor {
-	
+	private static final Logger logger = LoggerFactory.getLogger(ForeachRowProcessor.class);
 
 	@Override
 	public int dealRow(XSSFRow currentRow, Map<String, Object> rootObjectMap, final SpelExpressionParser parser) {
@@ -82,7 +91,7 @@ public class ForeachRowProcessor implements RowProcessor {
 			throw PoiElErrorCode.ILLEGAL_PARAM.exp("<poi:foreach>中list：" + key + "对应的值应该为List");
 		}
 		
-		List ls = (List) rootObject;
+		List<?> ls = (List<?>) rootObject;
 		
 		// transfer
 		setMutiData(beginCell, ls, tpRow, parser, rootObjectMap);
@@ -97,7 +106,7 @@ public class ForeachRowProcessor implements RowProcessor {
 	 * @param tpRow
 	 * @param parser
 	 */
-	private static void setMutiData(XSSFCell cell, List ls, MutiRowModel tpRow, final SpelExpressionParser parser, Map<String, Object> rootObjectMap) {
+	private static void setMutiData(XSSFCell cell, List<?> ls, MutiRowModel tpRow, final SpelExpressionParser parser, Map<String, Object> rootObjectMap) {
 		XSSFSheet sheet = cell.getSheet();
 		int mutiRow = tpRow.getEnd() - tpRow.getBegin() + 1; // 循环的行数
 		// 行往下移
@@ -134,7 +143,13 @@ public class ForeachRowProcessor implements RowProcessor {
 	private static String parseValue(String cellContent, final SpelExpressionParser parser, Object rootObjectItem, Map<String, Object> rootObjectMap) {
 		// 处理EL表达式
 		Expression expression = parser.parseExpression(cellContent, new TemplateParserContext());
-		String parsedContent = expression.getValue(rootObjectItem, String.class);
+		String parsedContent = null;
+		try {
+			parsedContent = expression.getValue(rootObjectItem, String.class);
+		} catch (EvaluationException e) {
+			logger.error(Log.op("ForeachRowProcessor#parseValue").msg("EL解析出错啦").toString(), e);
+			return cellContent; // 异常后，原样返回，不再处理
+		}
 		// 处理${key}
 		return DefaultRowProcessor.resolve(parsedContent, rootObjectMap, parser);
 	}
