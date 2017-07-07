@@ -10,7 +10,8 @@ public class RowProcessorStrategy {
 	
 	public static final List<RowProcessor> processors = Lists.newArrayList();
 	static{
-		processors.add(new MultiRowProcessor());
+		processors.add(new ForeachRowProcessor());
+		processors.add(new PropertyRowProcessor());
 	}
 	
 	public static RowProcessor getRowProcessor(XSSFRow row){
@@ -21,7 +22,7 @@ public class RowProcessorStrategy {
 			}
 		}
 		
-		return SingleRowProcessor.SINGLE.INSTANCE;
+		return DefaultRowProcessor.SINGLE.INSTANCE;
 	}
 	
 }
