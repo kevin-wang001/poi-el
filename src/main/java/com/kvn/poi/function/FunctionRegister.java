@@ -20,7 +20,7 @@ public class FunctionRegister {
 		logger.info("|----------PoiEl注册的内部函数------------|");
 		for(Method m : methods){
 			String funName = m.getName();
-			logger.info("|-----------" + funName + "------------|");
+			logger.info("|-----------" + funName + "------------------|");
 			PoiElContext.EVAL_CONTEXT.registerFunction(funName, m);
 		}
 		logger.info("|------------------------------------|");

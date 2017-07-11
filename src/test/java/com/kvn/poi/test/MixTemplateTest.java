@@ -1,13 +1,9 @@
 package com.kvn.poi.test;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -21,28 +17,6 @@ import com.kvn.poi.exportvo.Plan;
 * @date 2017年7月4日 下午5:52:23
 */
 public class MixTemplateTest {
-	
-	public static XSSFWorkbook getPoiWbByTpl(String path,Map<String, Object> rootObjectMap){
-		Long beginTime = System.currentTimeMillis();
-		System.out.println("开始处理时间:"+beginTime);
-		XSSFWorkbook wb = null;
-		try{
-			OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-			InputStream in = new FileInputStream(path);
-			wb = new XSSFWorkbook(in);
-			PoiEl.parse(wb, rootObjectMap);
-			wb.write(out);
-			out.flush();
-			out.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		final Long endTime = System.currentTimeMillis();
-		System.out.println("结束处理时间:"+endTime+",耗时："+(endTime-beginTime)/1000+"秒");
-		return wb;
-		
-	}
-	
 
 	public static void main(String[] args) throws Exception {
 		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\03_Template_混合模板.xlsx";
@@ -56,7 +30,9 @@ public class MixTemplateTest {
 		rootObjectMap.put("mangerName", "张三");
 		rootObjectMap.put("plan", plan);
 		rootObjectMap.put("list", list);
-		getPoiWbByTpl(path, rootObjectMap);
+		
+		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
+		PoiEl.parse2Destination(path, rootObjectMap, out);
 	}
 
 }

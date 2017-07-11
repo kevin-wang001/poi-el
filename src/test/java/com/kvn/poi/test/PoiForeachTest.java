@@ -21,28 +21,6 @@ import com.kvn.poi.exportvo.Order;
 */
 public class PoiForeachTest {
 	
-	public static XSSFWorkbook getPoiWbByTpl(String path,Map<String, Object> rootObjectMap){
-		Long beginTime = System.currentTimeMillis();
-		System.out.println("开始处理时间:"+beginTime);
-		XSSFWorkbook wb = null;
-		try{
-			OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-			InputStream in = new FileInputStream(path);
-			wb = new XSSFWorkbook(in);
-			PoiEl.parse(wb, rootObjectMap);
-			wb.write(out);
-			out.flush();
-			out.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		final Long endTime = System.currentTimeMillis();
-		System.out.println("结束处理时间:"+endTime+",耗时："+(endTime-beginTime)/1000+"秒");
-		return wb;
-		
-	}
-	
-
 	public static void main(String[] args) throws Exception {
 		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\01_Template_foreach.xlsx";
 		Map<String, Object> rootObjectMap = Maps.newHashMap();
@@ -52,7 +30,8 @@ public class PoiForeachTest {
 		
 		List list = Lists.newArrayList(order1, order2, order3);
 		rootObjectMap.put("list", list);
-		getPoiWbByTpl(path, rootObjectMap);
+		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
+		PoiEl.parse2Destination(path, rootObjectMap, out);
 	}
 
 }
