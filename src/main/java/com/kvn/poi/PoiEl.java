@@ -7,6 +7,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.kvn.poi.context.PoiElContext;
+import com.kvn.poi.function.FunctionRegister;
 import com.kvn.poi.processor.RowProcessorStrategy;
 
 /**
@@ -14,8 +16,16 @@ import com.kvn.poi.processor.RowProcessorStrategy;
  * @date 2017年7月5日 上午9:41:52
  */
 public class PoiEl {
+	
+	/**
+	 * 向StandardEvaluationContext中注册内部函数
+	 */
+	static {
+		FunctionRegister.registerInternalFunction();
+	}
+	
 	public static void parse(XSSFWorkbook wb, Map<String, Object> rootObjectMap) {
-		final SpelExpressionParser parser = new SpelExpressionParser();
+		PoiElContext peContext = new PoiElContext(new SpelExpressionParser(), rootObjectMap);
 		
 		// 只处理一个sheet
 		for (int i = 0; i < 1; i++) {
@@ -28,7 +38,7 @@ public class PoiEl {
 				if (row == null) {
 					continue;
 				}
-				int dealRows = RowProcessorStrategy.getRowProcessor(row).dealRow(row, rootObjectMap, parser);
+				int dealRows = RowProcessorStrategy.getRowProcessor(row).dealRow(row, peContext);
 				j = j + dealRows;
 			}
 		}

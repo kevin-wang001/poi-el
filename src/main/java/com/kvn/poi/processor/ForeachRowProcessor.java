@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.TemplateParserContext;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import com.kvn.poi.common.Constants;
+import com.kvn.poi.context.PoiElContext;
 import com.kvn.poi.domain.MutiRowModel;
 import com.kvn.poi.exception.PoiElErrorCode;
 import com.kvn.poi.log.Log;
@@ -32,7 +32,7 @@ public class ForeachRowProcessor implements RowProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(ForeachRowProcessor.class);
 
 	@Override
-	public int dealRow(XSSFRow currentRow, Map<String, Object> rootObjectMap, final SpelExpressionParser parser) {
+	public int dealRow(XSSFRow currentRow, PoiElContext peContext) {
 		XSSFCell beginCell = currentRow.getCell(support(currentRow));
 
 		// 从beginCell中找出list key
@@ -86,7 +86,7 @@ public class ForeachRowProcessor implements RowProcessor {
 		}
 		tpRow.setCellMap(cellMap);
 
-		Object rootObject = rootObjectMap.get(key);
+		Object rootObject = peContext.getRootObjectMap().get(key);
 		if(!(rootObject instanceof List)){
 			throw PoiElErrorCode.ILLEGAL_PARAM.exp("<poi:foreach>中list：" + key + "对应的值应该为List");
 		}
@@ -94,7 +94,7 @@ public class ForeachRowProcessor implements RowProcessor {
 		List<?> ls = (List<?>) rootObject;
 		
 		// transfer
-		setMutiData(beginCell, ls, tpRow, parser, rootObjectMap);
+		setMutiData(beginCell, ls, tpRow, peContext);
 
 		return ls.size() * (tpRow.getEnd() - tpRow.getBegin() + 1);
 	}
@@ -106,7 +106,7 @@ public class ForeachRowProcessor implements RowProcessor {
 	 * @param tpRow
 	 * @param parser
 	 */
-	private static void setMutiData(XSSFCell cell, List<?> ls, MutiRowModel tpRow, final SpelExpressionParser parser, Map<String, Object> rootObjectMap) {
+	private static void setMutiData(XSSFCell cell, List<?> ls, MutiRowModel tpRow, PoiElContext peContext) {
 		XSSFSheet sheet = cell.getSheet();
 		int mutiRow = tpRow.getEnd() - tpRow.getBegin() + 1; // 循环的行数
 		// 行往下移
@@ -133,25 +133,25 @@ public class ForeachRowProcessor implements RowProcessor {
 				for (Integer key : map.keySet()) {
 					String cellContent = map.get(key) == null ? "" : (String) map.get(key);
 					XSSFCell c = curRow.getCell(key);
-					c.setCellValue(parseValue(cellContent, parser, rootObjectItem, rootObjectMap));
+					c.setCellValue(parseValue(cellContent, rootObjectItem, peContext));
 				}
 			}
 		}
 
 	}
 
-	private static String parseValue(String cellContent, final SpelExpressionParser parser, Object rootObjectItem, Map<String, Object> rootObjectMap) {
+	private static String parseValue(String cellContent, Object rootObjectItem, PoiElContext peContext) {
 		// 处理EL表达式
-		Expression expression = parser.parseExpression(cellContent, new TemplateParserContext());
+		Expression expression = peContext.getSpelExpParser().parseExpression(cellContent, new TemplateParserContext());
 		String parsedContent = null;
 		try {
-			parsedContent = expression.getValue(rootObjectItem, String.class);
+			parsedContent = expression.getValue(PoiElContext.EVAL_CONTEXT, rootObjectItem, String.class);
 		} catch (EvaluationException e) {
 			logger.error(Log.op("ForeachRowProcessor#parseValue").msg("EL解析出错啦").toString(), e);
 			return cellContent; // 异常后，原样返回，不再处理
 		}
 		// 处理${key}
-		return DefaultRowProcessor.resolve(parsedContent, rootObjectMap, parser);
+		return DefaultRowProcessor.resolve(parsedContent, peContext);
 	}
 
 	/**
