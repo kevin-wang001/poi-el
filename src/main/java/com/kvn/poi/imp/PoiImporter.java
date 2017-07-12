@@ -1,9 +1,10 @@
-package com.kvn.poi;
+package com.kvn.poi.imp;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -17,8 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.kvn.poi.domain.PoiSheetVo;
 import com.kvn.poi.exception.PoiElErrorCode;
+import com.kvn.poi.imp.vo.PoiGenericSheetVo;
+import com.kvn.poi.imp.vo.PoiSheetVo;
 import com.kvn.poi.log.Log;
 
 /**
@@ -30,15 +32,7 @@ import com.kvn.poi.log.Log;
 public class PoiImporter {
 	private static final Logger logger = LoggerFactory.getLogger(PoiImporter.class);
 
-	public static PoiSheetVo importFirstSheetFrom(File excelFile) {
-		FileInputStream is = null;
-
-		try {
-			is = new FileInputStream(excelFile);
-		} catch (FileNotFoundException e) {
-			throw PoiElErrorCode.TEMPLATE_FILE_NOT_FOUND.exp(e, excelFile.getName());
-		}
-
+	public static PoiSheetVo importFirstSheetFrom(InputStream is){
 		XSSFWorkbook wb = null;
 		try {
 			wb = new XSSFWorkbook(is);
@@ -55,7 +49,7 @@ public class PoiImporter {
 		PoiSheetVo sheetVo = processSheet(wb.getSheetAt(0));
 		long end = System.currentTimeMillis();
 
-		logger.info(Log.op("PoiImporter#importFirstSheetFrom").msg("处理[{0}]共耗时[{1}ms]", excelFile.getName(), (end - start)).toString());
+		logger.info(Log.op("PoiImporter#importFirstSheetFrom").msg("处理导入共耗时[{0}ms]", (end - start)).toString());
 
 		// 关闭资源
 		try {
@@ -65,6 +59,65 @@ public class PoiImporter {
 		}
 
 		return sheetVo;
+	}
+	
+	
+	public static PoiSheetVo importFirstSheetFrom(File excelFile) {
+		FileInputStream is = null;
+
+		try {
+			is = new FileInputStream(excelFile);
+		} catch (FileNotFoundException e) {
+			throw PoiElErrorCode.TEMPLATE_FILE_NOT_FOUND.exp(e, excelFile.getName());
+		}
+
+		return importFirstSheetFrom(is);
+	}
+	
+	/**
+	 * 导入所有的sheet
+	 * @param excelFile
+	 * @return
+	 */
+	public static List<PoiSheetVo> importAllSheetFrom(File excelFile){
+		FileInputStream is = null;
+
+		try {
+			is = new FileInputStream(excelFile);
+		} catch (FileNotFoundException e) {
+			throw PoiElErrorCode.TEMPLATE_FILE_NOT_FOUND.exp(e, excelFile.getName());
+		}
+
+		XSSFWorkbook wb = null;
+		try {
+			wb = new XSSFWorkbook(is);
+		} catch (IOException e) {
+			try {
+				is.close();
+			} catch (IOException e1) {
+				logger.error(Log.op("PoiImporter#importAllSheetFrom").msg("关闭资源失败").toString(), e);
+			}
+			throw PoiElErrorCode.SYSTEM_ERROR.exp(e);
+		}
+
+		long start = System.currentTimeMillis();
+		List<PoiSheetVo> sheetVoLs = Lists.newArrayList();
+		for(int i=0; i<wb.getNumberOfSheets(); i++){
+			PoiSheetVo sheetVo = processSheet(wb.getSheetAt(i));
+			sheetVoLs.add(sheetVo);
+		}
+		long end = System.currentTimeMillis();
+
+		logger.info(Log.op("PoiImporter#importAllSheetFrom").msg("处理[{0}]共耗时[{1}ms]", excelFile.getName(), (end - start)).toString());
+
+		// 关闭资源
+		try {
+			is.close();
+		} catch (IOException e) {
+			logger.error(Log.op("PoiImporter#importFirstSheetFrom").msg("关闭资源失败").toString(), e);
+		}
+		
+		return sheetVoLs;
 	}
 
 	/**
@@ -78,6 +131,7 @@ public class PoiImporter {
 
 		// 处理每行
 		for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+//			System.out.println("行：" + i);
 			XSSFRow row = sheet.getRow(i);
 			if (row == null) { // 跳过空行
 				continue;
@@ -85,11 +139,12 @@ public class PoiImporter {
 
 			List<Object> oneRow = Lists.newArrayList(); // 行内容
 			// 单元格起始位置可能不是第0个
-			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+			for (int j = row.getFirstCellNum();j >= 0 && j <= row.getLastCellNum(); j++) {
+//				System.out.println("列：" + j);
 				XSSFCell cell = row.getCell(j);
 				Object value; // 单元格内容
 				if (cell == null) {
-					value = "";
+					value = null;
 				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC && HSSFDateUtil.isCellDateFormatted(cell)) {
 					value = cell.getDateCellValue();
 				} else {
@@ -153,4 +208,18 @@ public class PoiImporter {
 		}
 		return cv;
 	}
+	
+	
+	public static <T> PoiGenericSheetVo<T> importFirstSheetFrom(File excelFile, Class<T> clazz) {
+		// 导入原生的内容
+		PoiSheetVo rawSheetVo = importFirstSheetFrom(excelFile);
+		return PoiGenericSheetVo.resolve2Generic(rawSheetVo, clazz);
+	}
+	
+	public static <T> PoiGenericSheetVo<T> importFirstSheetFrom(InputStream is, Class<T> clazz) {
+		// 导入原生的内容
+		PoiSheetVo rawSheetVo = importFirstSheetFrom(is);
+		return PoiGenericSheetVo.resolve2Generic(rawSheetVo, clazz);
+	}
+
 }

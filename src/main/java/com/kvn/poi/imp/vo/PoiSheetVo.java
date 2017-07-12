@@ -1,4 +1,4 @@
-package com.kvn.poi.domain;
+package com.kvn.poi.imp.vo;
 
 import java.util.List;
 
@@ -25,13 +25,15 @@ public class PoiSheetVo {
 		
 		return content.get(0); // 首行
 	}
-
-	public List<List<Object>> getBody() {
+	
+	
+	public List<List<Object>> getRawBody(){
 		if(CollectionUtils.isEmpty(content) || content.size() <= 1){
 			return null;
 		}
 		// 除第一行以外的内容
-		return content.subList(1, content.size() - 1);
+		List<List<Object>> rawBody = content.subList(1, content.size() - 1);
+		return rawBody;
 	}
 
 	public List<List<Object>> getContent() {

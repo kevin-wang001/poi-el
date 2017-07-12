@@ -1,4 +1,4 @@
-package com.kvn.poi.test;
+package com.kvn.poi.export_test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -8,7 +8,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.kvn.poi.MockUtil;
-import com.kvn.poi.PoiExporter;
+import com.kvn.poi.exp.PoiExporter;
 import com.kvn.poi.exportvo.Order;
 
 /**
