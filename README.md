@@ -1,2 +1,33 @@
-#poi-el
-excel导出神器，poi-el。
+# poi-el
+excel导出与导入神器，poi-el。  
+* poi-el支持强大的excel模板导出功能  
+* poi-el支持方便的excel导入API
+
+## excel模板导出
+使用poi + spEl，支持各种普通模板和复杂模板的导出功能
+### Quick Start:
+参考：  
+com.kvn.poi.export_test.ForeachTest.java  
+com.kvn.poi.export_test.MixTemplateTest.java  
+com.kvn.poi.export_test.MultiPoiForeachTest.java  
+  
+**API:**  
+>
+	PoiExporter.export2Destination(InputStream templateInputStream, Map<String, Object> rootObjectMap, OutputStream des)
+**模板示例**  
+![foreach](img/foreach.png)  
+  
+  
+## excel模板导入
+支持简洁易用的excel导入API  
+### Quick Start:
+参考:  
+com.kvn.poi.import_test.ImportRawTest.java  
+com.kvn.poi.import_test.ImportGenericTest.java  
+  
+**API**
+>
+	PoiSheetVo sheetVo = PoiImporter.importFirstSheetFrom(is);
+
+>
+	PoiGenericSheetVo<OrderImportVo> genericSheetVo = PoiImporter.importFirstSheetFrom(is, OrderImportVo.class);
