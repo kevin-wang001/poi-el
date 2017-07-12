@@ -11,16 +11,16 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * @author wzy
  * @date 2017年7月11日 下午7:54:10
  */
-public class PoiElContext {
+public class PoiExporterContext {
 	private SpelExpressionParser spelExpParser;
 	public static final StandardEvaluationContext EVAL_CONTEXT = new StandardEvaluationContext();
 	private Map<String, Object> rootObjectMap;
 
-	public PoiElContext() {
+	public PoiExporterContext() {
 		super();
 	}
 
-	public PoiElContext(SpelExpressionParser spelExpressionParser, Map<String, Object> rootObjectMap) {
+	public PoiExporterContext(SpelExpressionParser spelExpressionParser, Map<String, Object> rootObjectMap) {
 		this.spelExpParser = spelExpressionParser;
 		this.rootObjectMap = rootObjectMap;
 	}

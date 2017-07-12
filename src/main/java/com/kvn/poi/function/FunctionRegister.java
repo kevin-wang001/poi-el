@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kvn.poi.context.PoiElContext;
+import com.kvn.poi.context.PoiExporterContext;
 
 /**
  * 函数注册器
@@ -21,7 +21,7 @@ public class FunctionRegister {
 		for(Method m : methods){
 			String funName = m.getName();
 			logger.info("|-----------" + funName + "------------------|");
-			PoiElContext.EVAL_CONTEXT.registerFunction(funName, m);
+			PoiExporterContext.EVAL_CONTEXT.registerFunction(funName, m);
 		}
 		logger.info("|------------------------------------|");
 	}

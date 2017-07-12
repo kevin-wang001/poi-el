@@ -32,7 +32,7 @@ public class MixTemplateTest {
 		rootObjectMap.put("list", list);
 		
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiExporter.parse2Destination(path, rootObjectMap, out);
+		PoiExporter.export2Destination(path, rootObjectMap, out);
 	}
 
 }

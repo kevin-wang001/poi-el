@@ -18,7 +18,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.common.TemplateParserContext;
 
 import com.kvn.poi.common.Constants;
-import com.kvn.poi.context.PoiElContext;
+import com.kvn.poi.context.PoiExporterContext;
 import com.kvn.poi.domain.MutiRowModel;
 import com.kvn.poi.exception.PoiElErrorCode;
 import com.kvn.poi.log.Log;
@@ -32,7 +32,7 @@ public class ForeachRowProcessor implements RowProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(ForeachRowProcessor.class);
 
 	@Override
-	public int dealRow(XSSFRow currentRow, PoiElContext peContext) {
+	public int dealRow(XSSFRow currentRow, PoiExporterContext peContext) {
 		XSSFCell beginCell = currentRow.getCell(support(currentRow));
 
 		// 从beginCell中找出list key
@@ -106,7 +106,7 @@ public class ForeachRowProcessor implements RowProcessor {
 	 * @param tpRow
 	 * @param parser
 	 */
-	private static void setMutiData(XSSFCell cell, List<?> ls, MutiRowModel tpRow, PoiElContext peContext) {
+	private static void setMutiData(XSSFCell cell, List<?> ls, MutiRowModel tpRow, PoiExporterContext peContext) {
 		XSSFSheet sheet = cell.getSheet();
 		int mutiRow = tpRow.getEnd() - tpRow.getBegin() + 1; // 循环的行数
 		// 行往下移
@@ -140,12 +140,12 @@ public class ForeachRowProcessor implements RowProcessor {
 
 	}
 
-	private static String parseValue(String cellContent, Object rootObjectItem, PoiElContext peContext) {
+	private static String parseValue(String cellContent, Object rootObjectItem, PoiExporterContext peContext) {
 		// 处理EL表达式
 		Expression expression = peContext.getSpelExpParser().parseExpression(cellContent, new TemplateParserContext());
 		String parsedContent = null;
 		try {
-			parsedContent = expression.getValue(PoiElContext.EVAL_CONTEXT, rootObjectItem, String.class);
+			parsedContent = expression.getValue(PoiExporterContext.EVAL_CONTEXT, rootObjectItem, String.class);
 		} catch (EvaluationException e) {
 			logger.error(Log.op("ForeachRowProcessor#parseValue").msg("EL解析出错啦").toString(), e);
 			return cellContent; // 异常后，原样返回，不再处理

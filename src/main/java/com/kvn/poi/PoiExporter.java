@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import com.kvn.poi.context.PoiElContext;
+import com.kvn.poi.context.PoiExporterContext;
 import com.kvn.poi.exception.PoiElErrorCode;
 import com.kvn.poi.function.FunctionRegister;
 import com.kvn.poi.log.Log;
@@ -35,13 +35,13 @@ public class PoiExporter {
 		FunctionRegister.registerInternalFunction();
 	}
 	
-	public static void parse(XSSFWorkbook wb, Map<String, Object> rootObjectMap) {
+	public static void export(XSSFWorkbook wb, Map<String, Object> rootObjectMap) {
 		Long start = System.currentTimeMillis();
 		
-		PoiElContext peContext = new PoiElContext(new SpelExpressionParser(), rootObjectMap);
+		PoiExporterContext peContext = new PoiExporterContext(new SpelExpressionParser(), rootObjectMap);
 		
-		// 只处理一个sheet
-		for (int i = 0; i < 1; i++) {
+		// 分sheet进行处理
+		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 			XSSFSheet sheet = wb.getSheetAt(i);
 			// 开始行结束行
 			int j = sheet.getFirstRowNum();
@@ -62,7 +62,7 @@ public class PoiExporter {
 	}
 	
 	
-	public static XSSFWorkbook parse2Destination(String templatePath, Map<String, Object> rootObjectMap, OutputStream des){
+	public static XSSFWorkbook export2Destination(String templatePath, Map<String, Object> rootObjectMap, OutputStream des){
 		InputStream in = null;
 		try {
 			in = new FileInputStream(templatePath);
@@ -75,7 +75,7 @@ public class PoiExporter {
 		} catch (IOException e) {
 			throw PoiElErrorCode.SYSTEM_ERROR.exp(e);
 		}
-		PoiExporter.parse(wb, rootObjectMap);
+		PoiExporter.export(wb, rootObjectMap);
 		
 		// 关闭资源
 		try {

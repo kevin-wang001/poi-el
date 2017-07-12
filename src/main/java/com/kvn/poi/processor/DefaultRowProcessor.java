@@ -12,7 +12,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.common.TemplateParserContext;
 
 import com.kvn.poi.common.Constants;
-import com.kvn.poi.context.PoiElContext;
+import com.kvn.poi.context.PoiExporterContext;
 import com.kvn.poi.log.Log;
 
 /**
@@ -33,7 +33,7 @@ public class DefaultRowProcessor implements RowProcessor {
 	}
 
 	@Override
-	public int dealRow(XSSFRow currentRow, PoiElContext peContext) {
+	public int dealRow(XSSFRow currentRow, PoiExporterContext peContext) {
 		for (int i = 0; i < currentRow.getLastCellNum(); i++) {
 			XSSFCell cell = currentRow.getCell(i);
 			if (null != cell && cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
@@ -54,7 +54,7 @@ public class DefaultRowProcessor implements RowProcessor {
 	 * @param parser
 	 * @return
 	 */
-	public static String resolve(String cellContent, PoiElContext peContext) {
+	public static String resolve(String cellContent, PoiExporterContext peContext) {
 		String resolvedContent = cellContent;
 		Pattern pattern = Pattern.compile(Constants.POI_KEY_REGEXP);
 		// 处理${key}

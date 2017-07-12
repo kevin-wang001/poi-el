@@ -31,7 +31,7 @@ public class PoiForeachTest {
 		List list = Lists.newArrayList(order1, order2, order3);
 		rootObjectMap.put("list", list);
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiExporter.parse2Destination(path, rootObjectMap, out);
+		PoiExporter.export2Destination(path, rootObjectMap, out);
 	}
 
 }
