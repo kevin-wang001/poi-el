@@ -12,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.kvn.poi.MockUtil;
-import com.kvn.poi.PoiEl;
+import com.kvn.poi.PoiExporter;
 import com.kvn.poi.exportvo.Order;
 
 /**
@@ -31,7 +31,7 @@ public class PoiForeachTest {
 		List list = Lists.newArrayList(order1, order2, order3);
 		rootObjectMap.put("list", list);
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiEl.parse2Destination(path, rootObjectMap, out);
+		PoiExporter.parse2Destination(path, rootObjectMap, out);
 	}
 
 }

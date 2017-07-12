@@ -21,11 +21,12 @@ import com.kvn.poi.log.Log;
 import com.kvn.poi.processor.RowProcessorStrategy;
 
 /**
+ * excel导出类
  * @author wzy
  * @date 2017年7月5日 上午9:41:52
  */
-public class PoiEl {
-	private static final Logger logger = LoggerFactory.getLogger(PoiEl.class);
+public class PoiExporter {
+	private static final Logger logger = LoggerFactory.getLogger(PoiExporter.class);
 	
 	/**
 	 * 向StandardEvaluationContext中注册内部函数
@@ -74,7 +75,7 @@ public class PoiEl {
 		} catch (IOException e) {
 			throw PoiElErrorCode.SYSTEM_ERROR.exp(e);
 		}
-		PoiEl.parse(wb, rootObjectMap);
+		PoiExporter.parse(wb, rootObjectMap);
 		
 		// 关闭资源
 		try {

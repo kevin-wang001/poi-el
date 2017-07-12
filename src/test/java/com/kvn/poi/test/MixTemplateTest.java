@@ -8,7 +8,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.kvn.poi.MockUtil;
-import com.kvn.poi.PoiEl;
+import com.kvn.poi.PoiExporter;
 import com.kvn.poi.exportvo.Order;
 import com.kvn.poi.exportvo.Plan;
 
@@ -32,7 +32,7 @@ public class MixTemplateTest {
 		rootObjectMap.put("list", list);
 		
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiEl.parse2Destination(path, rootObjectMap, out);
+		PoiExporter.parse2Destination(path, rootObjectMap, out);
 	}
 
 }
