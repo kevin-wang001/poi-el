@@ -17,6 +17,9 @@ public class EmptyResolver extends AbstractResolver {
 		public static final EmptyResolver INSTANCE = new EmptyResolver();
 	}
 
+	/**
+	 * 永远为true
+	 */
 	@Override
 	public boolean support(Field field) {
 		return true;
@@ -26,12 +29,5 @@ public class EmptyResolver extends AbstractResolver {
 	public Object process() {
 		return null;
 	}
-
-	@Override
-	protected Class getAnnotationClass() {
-		return null;
-	}
-
-	
 
 }

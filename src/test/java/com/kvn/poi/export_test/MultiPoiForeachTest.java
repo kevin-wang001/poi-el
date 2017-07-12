@@ -1,6 +1,7 @@
 package com.kvn.poi.export_test;
 
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import com.kvn.poi.exportvo.Order;
 public class MultiPoiForeachTest {
 	
 	public static void main(String[] args) throws Exception {
-		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\02_Template_多个foreach.xlsx";
 		Map<String, Object> rootObjectMap = Maps.newHashMap();
 		Order order1 = MockUtil.randomInstanceOfNonCollection(Order.class);
 		Order order2 = MockUtil.randomInstanceOfNonCollection(Order.class);
@@ -35,7 +35,8 @@ public class MultiPoiForeachTest {
 		rootObjectMap.put("list2", list2);
 		
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiExporter.export2Destination(path, rootObjectMap, out);
+		InputStream is = ForeachTest.class.getClassLoader().getResourceAsStream("template/02_Template_多个foreach.xlsx");
+		PoiExporter.export2Destination(is, rootObjectMap, out);
 	}
 
 }

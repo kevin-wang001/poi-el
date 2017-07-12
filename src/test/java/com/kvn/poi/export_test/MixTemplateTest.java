@@ -1,6 +1,7 @@
 package com.kvn.poi.export_test;
 
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import com.kvn.poi.exportvo.Plan;
 public class MixTemplateTest {
 
 	public static void main(String[] args) throws Exception {
-		String path = "E:\\gitWorkspace\\poi-el\\src\\main\\resources\\template\\03_Template_混合模板.xlsx";
 		Map<String, Object> rootObjectMap = Maps.newHashMap();
 		Plan plan = MockUtil.randomInstanceOfNonCollection(Plan.class);
 		Order order1 = MockUtil.randomInstanceOfNonCollection(Order.class);
@@ -32,7 +32,8 @@ public class MixTemplateTest {
 		rootObjectMap.put("list", list);
 		
 		OutputStream out = new FileOutputStream("E:\\rlt\\test.xlsx");
-		PoiExporter.export2Destination(path, rootObjectMap, out);
+		InputStream is = ForeachTest.class.getClassLoader().getResourceAsStream("template/03_Template_混合模板.xlsx");
+		PoiExporter.export2Destination(is, rootObjectMap, out);
 	}
 
 }

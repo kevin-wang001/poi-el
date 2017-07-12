@@ -25,15 +25,10 @@ public class DateFieldResolver extends AbstractResolver<ExcelDateColum> {
 	public Object process() {
 		String columnName = excelDateColum.value();
 		int indexOfColumn = head.indexOf(columnName);
-		Object columnRawValue = input.get(indexOfColumn);
+		Object columnRawValue = row.get(indexOfColumn);
 		DateTimeFormatter format = DateTimeFormat.forPattern(excelDateColum.pattern());
 //		// 时间解析
 		return DateTime.parse(columnRawValue.toString(), format).toDate();
-	}
-
-	@Override
-	protected Class<ExcelDateColum> getAnnotationClass() {
-		return ExcelDateColum.class;
 	}
 
 	

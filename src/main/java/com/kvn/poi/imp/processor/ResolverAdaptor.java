@@ -11,9 +11,8 @@ import com.kvn.poi.imp.anno.ExcelDateColum;
  * @date 2017年7月12日 下午3:30:52
  */
 public class ResolverAdaptor {
-
-	@SuppressWarnings("rawtypes")
-	public static AbstractResolver adapt(Field field) {
+	
+	public static AbstractResolver<?> adapt(Field field) {
 		ExcelColum ec = field.getAnnotation(ExcelColum.class);
 		if (ec != null) {
 			return new DefaultFieldResolver(field, ec);

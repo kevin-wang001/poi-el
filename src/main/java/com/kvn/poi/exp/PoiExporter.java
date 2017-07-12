@@ -1,5 +1,6 @@
 package com.kvn.poi.exp;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,17 +62,34 @@ public class PoiExporter {
 		logger.info(Log.op("PoiEl#parse").msg("PoiEl解析模板耗时[{0}]ms", (end - start)).toString());
 	}
 	
-	
-	public static XSSFWorkbook export2Destination(String templatePath, Map<String, Object> rootObjectMap, OutputStream des){
+	/**
+	 * 导出到指定地方 des
+	 * @param templateFile
+	 * @param rootObjectMap
+	 * @param des
+	 * @return
+	 */
+	public static XSSFWorkbook export2Destination(File templateFile, Map<String, Object> rootObjectMap, OutputStream des){
 		InputStream in = null;
 		try {
-			in = new FileInputStream(templatePath);
+			in = new FileInputStream(templateFile);
 		} catch (FileNotFoundException e) {
-			throw PoiElErrorCode.TEMPLATE_FILE_NOT_FOUND.exp(e, templatePath);
+			throw PoiElErrorCode.TEMPLATE_FILE_NOT_FOUND.exp(e, templateFile.getName());
 		}
+		return export2Destination(in, rootObjectMap, des);
+	}
+	
+	/**
+	 * 导出到指定地方 des
+	 * @param templateInputStream 模板
+	 * @param rootObjectMap 数据
+	 * @param des 导出的位置
+	 * @return
+	 */
+	public static XSSFWorkbook export2Destination(InputStream templateInputStream, Map<String, Object> rootObjectMap, OutputStream des){
 		XSSFWorkbook wb = null;
 		try {
-			wb = new XSSFWorkbook(in);
+			wb = new XSSFWorkbook(templateInputStream);
 		} catch (IOException e) {
 			throw PoiElErrorCode.SYSTEM_ERROR.exp(e);
 		}
