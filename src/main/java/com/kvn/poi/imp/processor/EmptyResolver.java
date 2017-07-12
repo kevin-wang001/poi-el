@@ -1,13 +1,13 @@
 package com.kvn.poi.imp.processor;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 /**
 * @author wzy
 * @date 2017年7月12日 下午2:40:20
 */
-public class EmptyResolver implements Resolver {
+@SuppressWarnings("rawtypes")
+public class EmptyResolver extends AbstractResolver {
 	
 	private EmptyResolver() {
 		super();
@@ -28,8 +28,8 @@ public class EmptyResolver implements Resolver {
 	}
 
 	@Override
-	public Resolver build(List<Object> input, List<Object> head) {
-		return this;
+	protected Class getAnnotationClass() {
+		return null;
 	}
 
 	

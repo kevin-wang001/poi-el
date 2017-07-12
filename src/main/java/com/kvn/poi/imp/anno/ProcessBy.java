@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 */
 @Target({ ANNOTATION_TYPE })
 @Retention(RUNTIME)
+@Deprecated
 public @interface ProcessBy {
 	Class<?> value();
 }

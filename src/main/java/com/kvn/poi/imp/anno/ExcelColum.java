@@ -6,15 +6,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.kvn.poi.imp.processor.DefaultFieldResolver;
-
 /**
 * @author wzy
 * @date 2017年7月12日 上午11:15:57
 */
 @Target({ FIELD })
 @Retention(RUNTIME)
-@ProcessBy(DefaultFieldResolver.class)
 public @interface ExcelColum {
 	String value(); // 导入excel的列名
 }
