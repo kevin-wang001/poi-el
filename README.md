@@ -31,3 +31,6 @@ com.kvn.poi.import_test.ImportGenericTest.java
 
 >
 	PoiGenericSheetVo<OrderImportVo> genericSheetVo = PoiImporter.importFirstSheetFrom(is, OrderImportVo.class);
+
+# 计划  
+1. 后续可以考虑使用MyBatis解析动态SQL的思想，来扩展属性占位符和数据来源，将属性占位符和数据来源解耦
