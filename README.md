@@ -15,8 +15,15 @@ com.kvn.poi.export_test.MultiPoiForeachTest.java
 >
 	PoiExporter.export2Destination(InputStream templateInputStream, Map<String, Object> rootObjectMap, OutputStream des)
 **模板示例**  
+
+## 普通模板：  
 ![foreach](img/foreach.png)  
+
+## 复杂模板——多个foreach模板：  
+![多个foreach](img/多个foreach.jpg)  
   
+## 复杂模板——混合模板：  
+![混合模板](img/混合模板.jpg)  
   
 ## excel模板导入
 支持简洁易用的excel导入API  
