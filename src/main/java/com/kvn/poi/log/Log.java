@@ -9,7 +9,6 @@ import java.util.Map;
  * 
  */
 public class Log {
-	private static boolean isSansInfoCrytoEnable = true; 
 	/**
 	 * 操作类型
 	 */
@@ -35,13 +34,6 @@ public class Log {
 	 */
 	private static final String EMPTY_STR = "";
 	
-	public static void setIsSansInfoCryptoEnable(boolean isEnable){
-		isSansInfoCrytoEnable = isEnable; 
-	}
-	
-	public static boolean isSansInfoCryptoEnable(){
-		return isSansInfoCrytoEnable; 
-	}
 	/**
 	 * 
 	 * @param operation 操作
