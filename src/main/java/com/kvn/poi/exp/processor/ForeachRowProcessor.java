@@ -110,7 +110,9 @@ public class ForeachRowProcessor implements RowProcessor {
 		XSSFSheet sheet = cell.getSheet();
 		int mutiRow = tpRow.getEnd() - tpRow.getBegin() + 1; // 循环的行数
 		// 行往下移
-		sheet.shiftRows(tpRow.getEnd() + 1, sheet.getLastRowNum() + 3, (ls.size() - 1) * mutiRow, true, false);
+		if(ls.size() > 1){ // fix 只有一条数据时，不需要下移
+			sheet.shiftRows(tpRow.getEnd() + 1, sheet.getLastRowNum() + 3, (ls.size() - 1) * mutiRow, true, false);
+		}
 
 		Map<Integer, Map<Integer, Object>> cellMap = tpRow.getCellMap();
 

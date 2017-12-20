@@ -24,7 +24,7 @@ public class ForeachTest {
 		Order order2 = MockUtil.randomInstanceOfNonCollection(Order.class);
 		Order order3 = MockUtil.randomInstanceOfNonCollection(Order.class);
 		
-		List list = Lists.newArrayList(order1, order2, order3);
+		List list = Lists.newArrayList(order1);
 		rootObjectMap.put("list", list);
 		OutputStream des = new FileOutputStream("E:\\rlt\\test.xlsx");
 		InputStream is = ForeachTest.class.getClassLoader().getResourceAsStream("template/01_Template_foreach.xlsx");
