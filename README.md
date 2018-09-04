@@ -1,7 +1,8 @@
 # poi-el
 excel导出与导入神器，poi-el。  
 * poi-el支持强大的excel模板导出功能  
-* poi-el支持方便的excel导入API
+* poi-el能很方便的支持导出函数扩展（EL的特性）  
+* poi-el支持方便的excel导入API  
 
 ## excel模板导出
 使用poi + spEl，支持各种普通模板和复杂模板的导出功能
@@ -24,6 +25,14 @@ com.kvn.poi.export_test.MultiPoiForeachTest.java
   
 ## 复杂模板——混合模板：  
 ![混合模板](img/混合模板.jpg)  
+
+## 导出函数扩展  
+poi-el默认会去读取 **META-INF/poi-el/poi-el-functions** 文件，里面存放扩展函数类的全限定名。  
+poi-el内部默认注册了 [InternalUtils](src/main/java/com/kvn/poi/exp/function/InternalUtils.java) ：  
+>  
+    # 内部函数
+    com.kvn.poi.exp.function.InternalUtils
+当然，开发者也可以将自定义的函数扩展添加到自己的工程目录文件 META-INF/poi-el/poi-el-functions 下
   
 ## excel模板导入
 支持简洁易用的excel导入API  
