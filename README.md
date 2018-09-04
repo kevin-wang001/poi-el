@@ -27,12 +27,19 @@ com.kvn.poi.export_test.MultiPoiForeachTest.java
 ![混合模板](img/混合模板.jpg)  
 
 ## 导出函数扩展  
+* 注册扩展函数到上下文中
 poi-el默认会去读取 **META-INF/poi-el/poi-el-functions** 文件，里面存放扩展函数类的全限定名。  
 poi-el内部默认注册了 [InternalUtils](src/main/java/com/kvn/poi/exp/function/InternalUtils.java) ：  
 >  
     # 内部函数
     com.kvn.poi.exp.function.InternalUtils
 当然，开发者也可以将自定义的函数扩展添加到自己的工程目录文件 META-INF/poi-el/poi-el-functions 下
+
+* 直接使用没有注册到上下文中的函数  
+我们可以直接使用没有注册到上下文中的函数，不过需要指定方法的全限定名：（EL调用函数，是不是很强大^_^）  
+例如：  
+>   
+    #{ T(com.kvn.poi.exp.function.NotRegistedFunction).fmtString(keyName) }
   
 ## excel模板导入
 支持简洁易用的excel导入API  
