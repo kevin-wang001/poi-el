@@ -34,6 +34,9 @@ poi-el内部默认注册了 [InternalUtils](src/main/java/com/kvn/poi/exp/functi
     # 内部函数
     com.kvn.poi.exp.function.InternalUtils
 当然，开发者也可以将自定义的函数扩展添加到自己的工程目录文件 META-INF/poi-el/poi-el-functions 下
+使用形如：（参考：[03_Template_混合模板.xlsx](src/test/resources/template/03_Template_混合模板.xlsx)）  
+>   
+    ${#fmtDate(endDate,'yyyy-MM-dd')}
 
 * 直接使用没有注册到上下文中的函数  
 我们可以直接使用没有注册到上下文中的函数，不过需要指定方法的全限定名：（EL调用函数，是不是很强大^_^）  
