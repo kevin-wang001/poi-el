@@ -11,6 +11,7 @@ public enum PoiElErrorCode implements IErrors {
 	TAG_NOT_FOUND(1001, "[{0}]中找不到tag:[{1}]"),
 	TEMPLATE_FILE_NOT_FOUND(1002, "找不到模板[{0}]"),
 	EXCEL_FILE_NOT_FOUND(1003, "找不到被导入的excel[{0}]"),
+	NOT_FOUND_IN_ROOTOBJECT(1004, "没有在RootObject中找到{0}对应的值"),
 	/**-----------------COMMON ERROR--------------------*/
 	SYSTEM_ERROR(1998, "系统错误"),
 	ILLEGAL_PARAM(1999, "参数异常:{0}");

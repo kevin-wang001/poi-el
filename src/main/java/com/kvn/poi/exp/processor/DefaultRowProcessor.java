@@ -3,6 +3,7 @@ package com.kvn.poi.exp.processor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.kvn.poi.exception.PoiElErrorCode;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.slf4j.Logger;
@@ -61,8 +62,16 @@ public class DefaultRowProcessor implements RowProcessor {
 		for (Matcher matcher = pattern.matcher(resolvedContent); matcher.find(); matcher = pattern.matcher(resolvedContent)) {
 			String key = matcher.group(1);
 			String value = (String) peContext.getRootObjectMap().get(key);
+			if (value == null) {
+				throw PoiElErrorCode.NOT_FOUND_IN_ROOTOBJECT.exp(key);
+			}
 			resolvedContent = matcher.replaceFirst(value);
+			// fix resolvedContent 为null，直接返回
+			if (resolvedContent == null) {
+				return "";
+			}
 		}
+
 
 		// 处理${vo.key}
 		pattern = Pattern.compile(Constants.POI_VO_DOT_KEY_REGEXP);
@@ -74,6 +83,10 @@ public class DefaultRowProcessor implements RowProcessor {
 				String expression = matcher.replaceFirst("#$1$3"); // 转换成EL
 				String resolvedKey = peContext.getSpelExpParser().parseExpression(expression, new TemplateParserContext()).getValue(peContext.EVAL_CONTEXT, rootObjectItem, String.class);
 				resolvedContent = resolvedKey; // 替换内容
+				// fix resolvedContent 为null，直接返回
+				if (resolvedContent == null) {
+					return "";
+				}
 			}
 		} catch (EvaluationException | ParseException e) {
 			logger.error(Log.op("DefaultRowProcessor#resolve").msg("EL解析出错").toString(), e);
