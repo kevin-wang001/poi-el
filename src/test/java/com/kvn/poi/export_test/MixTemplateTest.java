@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.kvn.poi.MockUtil;
 import com.kvn.poi.exp.PoiExporter;
+import com.kvn.poi.exportvo.ManagerInfo;
 import com.kvn.poi.exportvo.Order;
 import com.kvn.poi.exportvo.Plan;
 
@@ -24,9 +25,9 @@ public class MixTemplateTest {
 	public static void main(String[] args) throws Exception {
 		Map<String, Object> rootObjectMap = Maps.newHashMap();
 		Plan plan = initPlan();
-		Order order1 = MockUtil.randomInstanceOfNonCollection(Order.class);
-		Order order2 = MockUtil.randomInstanceOfNonCollection(Order.class);
-		List<Order> list = Lists.newArrayList(order1, order2);
+		ManagerInfo info1 = new ManagerInfo("王自如", "身份证", "452332102152010021");
+		ManagerInfo info2 = new ManagerInfo("李自成", "护照", "4293322322152010021");
+		List<ManagerInfo> list = Lists.newArrayList(info1, info2);
 		
 		
 		rootObjectMap.put("mangerName", "张三");
