@@ -20,11 +20,14 @@ com.kvn.poi.export_test.MultiPoiForeachTest.java
 ## 普通模板：  
 ![foreach](img/foreach.png)  
 
+## 多sheet模板
+![foreach](img/多sheet.png) 
+
 ## 复杂模板——多个foreach模板：  
 ![多个foreach](img/多个foreach.jpg)  
   
 ## 复杂模板——混合模板：  
-![混合模板](img/混合模板.jpg)  
+![混合模板](img/混合模板.png)  
 
 ## 导出函数扩展  
 * 注册扩展函数到上下文中
