@@ -4,6 +4,15 @@ excel导出与导入神器，poi-el。
 * poi-el能很方便的支持导出函数扩展（EL的特性）  
 * poi-el支持方便的excel导入API  
 
+## maven 依赖  
+```xml
+<dependency>
+  <groupId>com.github.kevin-wang001</groupId>
+  <artifactId>poi-el</artifactId>
+  <version>2.0.1</version>
+</dependency>
+```
+
 ## excel模板导出
 使用poi + spEl，支持各种普通模板和复杂模板的导出功能
 ### Quick Start:
