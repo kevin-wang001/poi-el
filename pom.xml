@@ -44,7 +44,7 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<logback.version>1.1.2</logback.version>
 		<reflections.version>0.9.9-RC1</reflections.version>
-		<junit.version>4.10</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<!-- tools -->
 		<fastjson.version>1.2.54</fastjson.version>
 		<commons.lang3.version>3.3.2</commons.lang3.version>
